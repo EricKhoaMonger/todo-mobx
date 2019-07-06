@@ -13,7 +13,6 @@ class TodoStore {
 
   @action('fetchTodo')
   async fetchTodos() {
-    this.loading = true
     try {
       const response = await fetch('https://jsonplaceholder.typicode.com/todos')
       const data = await response.json()
@@ -37,6 +36,7 @@ class TodoStore {
 
   @action('checkStore')
   checkStore() {
+    console.log('called')
     this.loading = true
     const hydratedStore = localStorage.getItem('todoStore')
     if (!hydratedStore || JSON.parse(hydratedStore).list.length === 0) {

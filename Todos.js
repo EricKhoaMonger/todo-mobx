@@ -9,15 +9,15 @@ const gridSystem = {
 }
 
 const Todos = ({ todoStore }) => {
-  useEffect(() => {
-    todoStore.checkStore()
-  }, [])
+  // useEffect(() => {
+  //   todoStore.checkStore()
+  // }, [])
 
   const toggle = (todo) => todoStore.toggleTodo(todo)
 
   return todoStore.loading ? <p>Loading ...</p> : (
     <div style={gridSystem}>
-      {todoStore.list.map(todo => <Todo toggle={toggle} todo={todo} />)}
+      {todoStore.list.map(todo => <Todo toggle={toggle} todo={todo} key={todo.id} />)}
     </div>
   )
 }

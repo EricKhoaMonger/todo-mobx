@@ -11,10 +11,7 @@ const Todo = ({ todo, toggle }) => {
   const { id, title, completed } = todo
 
   return (
-    <div
-      key={id}
-      style={todoCard}
-    >
+    <div style={todoCard}>
       <input
         type="checkbox"
         checked={completed}
@@ -24,8 +21,6 @@ const Todo = ({ todo, toggle }) => {
       <span>{title}</span>
     </div>
   )
-
-
 }
 
 export default observer(Todo)
