@@ -9,10 +9,6 @@ const gridSystem = {
 }
 
 const Todos = ({ todoStore }) => {
-  // useEffect(() => {
-  //   todoStore.checkStore()
-  // }, [])
-
   const toggle = (todo) => todoStore.toggleTodo(todo)
 
   return todoStore.loading ? <p>Loading ...</p> : (
