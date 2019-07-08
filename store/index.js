@@ -6,7 +6,6 @@ const URL = 'https://jsonplaceholder.typicode.com/todos'
 
 class TodoStore {
   @persist('list') @observable list = []
-  @observable loading = true
 
   @computed get completedTodos() {
     return this.list.filter(todo => todo.completed)
@@ -20,13 +19,32 @@ class TodoStore {
       runInAction(() => {
         this.list = data
         this.list.length = 20
-        this.loading = false
       })
     } catch (ex) {
       runInAction(() => {
         this.list = []
-        this.loading = false
       })
+    }
+  }
+
+  @action('fetchTodo')
+  async addTodo(todo) {
+    console.log(todo)
+    try {
+      let res = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todo)
+      })
+      res = await res.json()
+
+      runInAction(() => {
+        this.list.unshift(res)
+      })
+    } catch (ex) {
+      console.log(ex)
     }
   }
 
@@ -37,7 +55,7 @@ class TodoStore {
       let res = await fetch(URL + '/' + todo.id, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json; charset=UTF-8'
         },
         body: JSON.stringify(todo)
       })
@@ -46,20 +64,18 @@ class TodoStore {
         this.list[todoIdx].completed = !this.list[todoIdx].completed
       })
     } catch (ex) {
-      console.log(ex)
+      console.log('catch ', ex)
     }
   }
 
   @action('checkStore')
   checkStore() {
-    this.loading = true
     const hydratedStore = localStorage.getItem('todoStore')
-    if (!hydratedStore || JSON.parse(hydratedStore).list.length === 0) {
+    // if (!hydratedStore || JSON.parse(hydratedStore).list.length === 0) {
       this.fetchTodos()
-    } else {
-      this.list = JSON.parse(hydratedStore).list
-      this.loading = false
-    }
+    // } else {
+    //   this.list = JSON.parse(hydratedStore).list
+    // }
   }
 }
 
@@ -78,7 +94,7 @@ reaction(
 
 export default todoStore;
 
-hydrate('todoStore', todoStore)
-  .then(() => todoStore.checkStore())
+// hydrate('todoStore', todoStore)
+//   .then(() => todoStore.checkStore())
 
-makeInspectable(todoStore);
+// makeInspectable(todoStore);

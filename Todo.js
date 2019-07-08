@@ -7,7 +7,6 @@ const todoCard = {
 }
 
 const Todo = ({ todo, toggle }) => {
-
   const { id, title, completed } = todo
 
   return (
